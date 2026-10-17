@@ -13,14 +13,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install Rust nightly
-      uses: dtolnay/rust-toolchain@nightly
+    - name: Install Rust stable
+      uses: dtolnay/rust-toolchain@stable
       with:
-        components: rust-src
+        targets: riscv64gc-unknown-none-elf
 
-    - name: Build for riscv64im-unknown-none-elf
+    - name: Build for riscv64gc-unknown-none-elf
       working-directory: code/zkvm_interface
-      run: cargo +nightly build --release --target riscv64im-unknown-none-elf -Z build-std=core
+      run: cargo build --release --target riscv64gc-unknown-none-elf
 
   fmt:
     runs-on: ubuntu-latest

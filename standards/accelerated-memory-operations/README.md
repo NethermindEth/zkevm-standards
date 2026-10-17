@@ -20,7 +20,7 @@ Because these symbols are emitted implicitly, an accelerated implementation that
 * Define the set of memory-operation symbols a zkVM may accelerate.
 * Mandate exact C semantics so that accelerated and non-accelerated builds are behaviorally identical, preserving source portability across vendors.
 * Specify the linking and symbol-resolution rules required for the implementation to take effect deterministically.
-* Keep acceleration optional, so the standard does not conflict with the [minimal RISC-V target](../riscv-target/target.md) or force a particular architecture.
+* Keep acceleration optional, so the standard does not conflict with the [RISC-V target](../riscv-target/target.md) or force a particular architecture.
 
 ## Non-Goals
 
@@ -43,7 +43,7 @@ When provided, these are exported from the vendor static library defined by the 
 
 ### Acceleration is optional
 
-Acceleration is an optimization, not a requirement, and exporting these symbols is how a vendor opts in. A zkVM may accelerate with a dedicated circuit (a DMA-style precompile), with a tuned software routine, or not at all — mandating a precompile would conflict with the minimal-ISA goal of the [RISC-V target](../riscv-target/target.md) standard.
+Acceleration is an optimization, not a requirement, and exporting these symbols is how a vendor opts in. A zkVM may accelerate with a dedicated circuit (a DMA-style precompile), with a tuned software routine, or not at all — mandating a precompile would add a requirement beyond the ISA defined by the [RISC-V target](../riscv-target/target.md) standard.
 
 * If the vendor library exports these symbols, the implementations must obey [Semantics](#semantics) and must be linked so they take effect (see [Linking and symbol resolution](#linking-and-symbol-resolution)).
 * If it does not, the guest falls back to the toolchain's default implementations (for Rust, the weak `compiler-builtins` definitions): correct but unaccelerated. The build must still link successfully.

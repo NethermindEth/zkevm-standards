@@ -4,7 +4,7 @@ This standard defines what a zkVM vendor must provide so that guest programs can
 
 ## Motivation
 
-The goal of this standard is to allow guest programs to be written in any language with a compiler that can target the RV64IM ISA defined in the [RISC-V Target Standard](../riscv-target/target.md) — such as C, C++, Rust, Zig, Go, or C# — and compiled with a generic, unmodified compiler. The resulting object files are then linked against a single vendor-supplied static library which provides all zkVM-specific functionality: machine initialization, IO, and cryptographic accelerators. The application developer does not need to know or care about the internal details of the zkVM; those are fully encapsulated in the library.
+The goal of this standard is to allow guest programs to be written in any language with a compiler that can target the RV64GC ISA defined in the [RISC-V Target Standard](../riscv-target/target.md) — such as C, C++, Rust, Zig, Go, or C# — and compiled with a generic, unmodified compiler. The resulting object files are then linked against a single vendor-supplied static library which provides all zkVM-specific functionality: machine initialization, IO, and cryptographic accelerators. The application developer does not need to know or care about the internal details of the zkVM; those are fully encapsulated in the library.
 
 This standard specifies what that library must contain and what the accompanying linker script must provide.
 
