@@ -119,7 +119,7 @@ The robust way to obtain an instruction-only executable segment is a post-link v
 
 The initial program counter is determined by the zkVM. A zkVM may begin execution at a fixed, documented boot address rather than reading `e_entry`; in that case the linker script places the program's entry (the vendor `_start`) at that address. Whichever model a zkVM uses, the loader validates `e_entry` and rejects the ELF if any check fails:
 
-- `e_entry` is aligned to the instruction word (4 bytes).
+- `e_entry` is aligned to the instruction alignment required by the target (2 bytes for `riscv64gc`).
 - `e_entry` lies within the zkVM's addressable space and falls within a loaded executable (`PF_X`) segment.
 - If the zkVM begins execution at a fixed boot address, `e_entry` equals that address.
 
@@ -147,6 +147,6 @@ The loader performs the validation in [Header validation](#header-validation), [
 
 ### `e_flags` is not validated
 
-The RISC-V-specific `e_flags` field (RVC, float ABI, RVE, and similar bits; see the [RISC-V ELF psABI, ELF Object Files](https://riscv-non-isa.github.io/riscv-elf-psabi-doc/#_elf_object_files)) is intentionally left unchecked. Unlike class, endianness, machine, and type — which are fixed for every conforming zkVM — `e_flags` records an ISA/ABI variant, and the [RISC-V target](../riscv-target/target.md) is a minimum a zkVM may exceed: a zkVM that implements the C extension can legitimately run a binary with `EF_RISCV_RVC` set. The field is also only advisory; the actual ISA/ABI limits are enforced by the instruction decoder during execution and by the linker when building the artifact, so a fixed `e_flags` requirement would over-constrain capable zkVMs without adding a real guarantee.
+The RISC-V-specific `e_flags` field (RVC, float ABI, RVE, and similar bits; see the [RISC-V ELF psABI, ELF Object Files](https://riscv-non-isa.github.io/riscv-elf-psabi-doc/#_elf_object_files)) is intentionally left unchecked. Unlike class, endianness, machine, and type — which are fixed for every conforming zkVM — `e_flags` records an ISA/ABI variant: a binary built for the [RISC-V target](../riscv-target/target.md) normally has `EF_RISCV_RVC` and `EF_RISCV_FLOAT_ABI_DOUBLE` set. The loader does not use `e_flags` to select the execution ISA or ABI. It executes under the target specified there; executed instructions must be supported, and producers and linkers are responsible for ABI compatibility. Omitting an `e_flags` check does not make binaries with incompatible calling conventions portable.
 
 

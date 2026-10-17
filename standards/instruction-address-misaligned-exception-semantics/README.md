@@ -15,7 +15,7 @@ This proposal standardizes the handling of instruction-address-misaligned except
 
 ## Relationship to Other Standards
 
-This standard applies to any zkVM whose underlying ISA can raise an instruction-address-misaligned exception. This includes, but is not limited to, the `riscv64im_zicclsm-unknown-none-elf` target defined in the RISC-V target standard, where the absence of the C extension means IALIGN=32 and any jump to a non-4-byte-aligned address raises such an exception. zkVMs supporting additional extensions — such as the C extension, which reduces IALIGN to 16 — will raise this exception under a narrower set of conditions, but the required effect when the exception does occur is the same.
+This standard applies when the underlying ISA raises an instruction-address-misaligned exception. For RISC-V targets with IALIGN=32, a taken branch or jump whose effective target is not 4-byte aligned raises this exception. For the `riscv64gc-unknown-none-elf` target defined in the [RISC-V target standard](../riscv-target/target.md), the C extension sets IALIGN=16, so standard branch and jump instructions cannot raise this exception: their targets are 2-byte aligned, and `JALR` clears bit 0 of its computed target. The termination requirement below applies to targets on which the exception can occur.
 
 The required effect of an instruction-address-misaligned exception is abnormal termination as defined by the execution termination semantics standard.
 
